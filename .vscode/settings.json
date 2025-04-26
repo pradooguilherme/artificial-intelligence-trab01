@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "bfstree.h": "c"
+        "bfstree.h": "c",
+        "unistd.h": "c"
     }
 }
