@@ -4,13 +4,14 @@
 #include <assert.h>
 #include <unistd.h>
 
-node BDS(game *G, game *goal)
+void BDS(game *G, game *goal, int *pathSize)
 {
     node nd = childNode(NULL, 0);
     copyGame(G, nd->state);
     if (endGame(G))
     {
-        return nd;
+        printf("A configuração inicial é a configuração objetivo. \n");
+        return;
     }
     printGame(G);
     printf("\n");
@@ -46,7 +47,8 @@ node BDS(game *G, game *goal)
                 if (isIn(explored_goal, child))
                 {
                     insert(explored_nd, child);
-                    return getPathFromBDS(child, explored_nd, explored_goal);
+                    getPathFromBDS(child, explored_nd, explored_goal, pathSize);
+                    return;
                 }
 
                 if (!isIn(explored_nd, child))
@@ -78,7 +80,8 @@ node BDS(game *G, game *goal)
                 if (isIn(explored_nd, child))
                 {
                     insert(explored_goal, child);
-                    return getPathFromBDS(child, explored_nd, explored_goal);
+                    getPathFromBDS(child, explored_nd, explored_goal, pathSize);
+                    return;
                 }
 
                 if (!isIn(explored_goal, child))
@@ -97,7 +100,8 @@ node BDS(game *G, game *goal)
         delGame(aux);
     }
 
-    return NULL;
+    printf("A busca falhou. \n");
+    return;
 }
 
 node getNode(fila f, node nd)
@@ -110,14 +114,17 @@ node getNode(fila f, node nd)
     return NULL;
 }
 
-node getPathFromBDS(node C, fila nd, fila goal)
+void getPathFromBDS(node C, fila nd, fila goal, int *pathSize)
 {
+    *pathSize = 0;
     node fromGoal = getNode(goal, C);
     node fromNd = getNode(nd, C);
+    *pathSize = fromGoal->pathCost + fromNd->pathCost;
 
     printf("Caminho do estado comum até o objetivo: \n");
 
-    while(fromGoal != NULL){
+    while (fromGoal != NULL)
+    {
         printGame(fromGoal->state);
         printf("\n");
         fromGoal = fromGoal->parent;
@@ -125,11 +132,10 @@ node getPathFromBDS(node C, fila nd, fila goal)
 
     printf("Caminho do estado comum até o estado inicial: \n");
 
-    while(fromNd != NULL){
+    while (fromNd != NULL)
+    {
         printGame(fromNd->state);
         printf("\n");
         fromNd = fromNd->parent;
     }
-
-    return C;
 }

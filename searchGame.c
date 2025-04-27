@@ -28,10 +28,10 @@ int main()
     game *G = newGame();
     G->grid[0][0] = 1;
     G->grid[0][1] = 2;
-    G->grid[0][2] = 5;
+    G->grid[0][2] = 0;
     G->grid[1][0] = 3;
-    G->grid[1][1] = 0;
-    G->grid[1][2] = 4;
+    G->grid[1][1] = 4;
+    G->grid[1][2] = 5;
     G->grid[2][0] = 6;
     G->grid[2][1] = 7;
     G->grid[2][2] = 8;
@@ -48,6 +48,7 @@ int main()
     scanf(" %d", &ans);
 
     node nd = NULL;
+    int pathSize = 0;
 
     switch (ans)
     {
@@ -72,12 +73,10 @@ int main()
         break;
     case 4:
         gettimeofday(&start, NULL);
-        BDS(G, goal);
+        BDS(G, goal, &pathSize);
         gettimeofday(&end, NULL);
         break;
     }
-
-    int pathSize = 0;
 
     while (nd != NULL)
     {
@@ -87,17 +86,10 @@ int main()
         nd = nd->parent;
     }
 
-    seconds = end.tv_sec - start.tv_sec;
-    micros = end.tv_usec - start.tv_usec;
+    double elapsed = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
 
-    if (micros < 0)
-    { // Ajusta se deu negativo
-        seconds--;
-        micros += 1000000;
-    }
-
-    printf("Tempo de execução: %ld segundos e %ld microssegundos\n", seconds, micros);
-    printf("Número de passos: %d\n", pathSize);
+    printf("%.5f segundos\n", elapsed);
+    printf("%d\n", pathSize);
 
     return 0;
 }

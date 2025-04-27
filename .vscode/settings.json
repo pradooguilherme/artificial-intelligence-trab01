@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "bfstree.h": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "tree.h": "c"
     }
 }

@@ -1,4 +1,3 @@
-
 #include "tree.h"
 
 #ifndef BFSTREE_H
